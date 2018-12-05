@@ -1,5 +1,7 @@
 package com.casasw.iddog;
 
+import android.os.AsyncTask;
+
 interface LoginInteractorInput {
     public void fetchLoginData(LoginRequest request);
 }
@@ -23,7 +25,9 @@ public class LoginInteractor implements LoginInteractorInput {
     @Override
     public void fetchLoginData(LoginRequest request) {
         aLoginWorkerInput = getLoginWorkerInput();
-        LoginResponse loginResponse = new LoginResponse();
+        SignUpTask task = new SignUpTask();
+        task.execute(request.getLogin().getUser());
+        /*LoginResponse loginResponse = new LoginResponse();
         LoginWorker loginWorker = new LoginWorker();
         loginWorker.setLoginData(request.getLogin());
 
@@ -31,6 +35,25 @@ public class LoginInteractor implements LoginInteractorInput {
 
 
 
-        output.presentLoginData(loginResponse);
+        output.presentLoginData(loginResponse);*/
+    }
+
+    private class SignUpTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPostExecute(String s) {
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setLoginJson(s);
+            output.presentLoginData(loginResponse);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            LoginWorker loginWorker = new LoginWorker();
+            loginWorker.setLoginData(new LoginModel(strings[0]));
+
+            return loginWorker.getLoginData();
+        }
     }
 }
+
+

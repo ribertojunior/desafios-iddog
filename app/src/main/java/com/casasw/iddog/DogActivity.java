@@ -21,6 +21,7 @@ public class DogActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_dog);
         //do the setup
 
         DogConfigurator.INSTANCE.configure(this);
@@ -31,7 +32,7 @@ public class DogActivity extends AppCompatActivity
         //populate the request
 
 
-        output.fetchDogActivityData(aDogRequest);
+//        output.fetchDogActivityData(aDogRequest);
         // Do other work
     }
 
