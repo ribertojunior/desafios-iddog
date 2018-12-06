@@ -2,6 +2,8 @@ package com.casasw.iddog;
 
 import android.os.AsyncTask;
 
+import com.google.gson.Gson;
+
 interface LoginInteractorInput {
     public void fetchLoginData(LoginRequest request);
 }
@@ -27,27 +29,22 @@ public class LoginInteractor implements LoginInteractorInput {
         aLoginWorkerInput = getLoginWorkerInput();
         SignUpTask task = new SignUpTask();
         task.execute(request.getLogin().getUser());
-        /*LoginResponse loginResponse = new LoginResponse();
-        LoginWorker loginWorker = new LoginWorker();
-        loginWorker.setLoginData(request.getLogin());
 
-        loginResponse.setLoginJson(loginWorker.getLoginData());
-
-
-
-        output.presentLoginData(loginResponse);*/
     }
 
     private class SignUpTask extends AsyncTask<String, Void, String> {
         @Override
         protected void onPostExecute(String s) {
+            Gson gson =  new Gson();
             LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setLoginJson(s);
+            LoginViewModel loginViewModel = gson.fromJson(s, LoginViewModel.class);
+            loginResponse.setLoginViewModel(loginViewModel);
             output.presentLoginData(loginResponse);
         }
 
         @Override
         protected String doInBackground(String... strings) {
+
             LoginWorker loginWorker = new LoginWorker();
             loginWorker.setLoginData(new LoginModel(strings[0]));
 

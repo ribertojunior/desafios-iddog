@@ -2,29 +2,43 @@ package com.casasw.iddog;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class DogModel {
     String token;
+    String breed;
 
-    public DogModel(String token) {
+    public DogModel(String token, String breed) {
         this.token = token;
     }
 
     public String getToken() {
         return token;
     }
+
+    public String getBreed() {
+        return breed;
+    }
 }
 
 class DogViewModel {
-    private String url;
+    private String category;
+    private ArrayList<String> list;
 
-    public String getUrl() {
-        return url;
+    public ArrayList<String> getList() {
+        return list;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setList(ArrayList<String> list) {
+        this.list = list;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
 
@@ -45,9 +59,6 @@ class DogCategory {
     }
 
 }
-class ListWrapper<T> {
-    List<T> dogs;
-}
 
 class DogRequest {
     private DogModel dogModel;
@@ -62,13 +73,13 @@ class DogRequest {
 }
 
 class DogResponse {
-    private String mJSON;
+    private DogViewModel dogViewModel;
 
-    public String getmJSON() {
-        return mJSON;
+    public DogResponse(DogViewModel dogViewModel) {
+        this.dogViewModel = dogViewModel;
     }
 
-    public void setmJSON(String mJSON) {
-        this.mJSON = mJSON;
+    public DogViewModel getDogViewModel() {
+        return dogViewModel;
     }
 }

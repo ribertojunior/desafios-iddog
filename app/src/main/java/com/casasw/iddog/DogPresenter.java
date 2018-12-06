@@ -20,6 +20,8 @@ public class DogPresenter implements DogPresenterInput {
         // Log.e(TAG, "presentDogActivityData() called with: mResponse = [" + mResponse + "]");
         //Do your decoration or filtering here
 
+        output.get().displayDogActivityData(response.getDogViewModel());
+
     }
 
 

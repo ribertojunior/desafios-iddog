@@ -2,14 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.casasw.iddog">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo_24"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <provider
+            android:authorities="com.casasw.iddog.app"
+            android:name=".data.DogProvider"
+            android:exported="false"
+            android:syncable="true"/>
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name">
@@ -24,6 +31,11 @@
             android:parentActivityName=".LoginActivity">
 
         </activity>
+        <uses-library android:name="android.test.runner"
+            android:required="false" />
+
+
     </application>
+
 
 </manifest>

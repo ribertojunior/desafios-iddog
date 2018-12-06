@@ -3,7 +3,11 @@ package com.casasw.iddog;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -45,8 +49,12 @@ public class LoginActivity extends AppCompatActivity
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showProgress(true);
-                fetchLoginData();
+                if (isInternetAvailable()){
+                    showProgress(true);
+                    fetchLoginData();
+                } else
+                    Toast.makeText(LoginActivity.this, getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+
             }
         });
         mLoginFormView = findViewById(R.id.login_form);
@@ -117,7 +125,17 @@ public class LoginActivity extends AppCompatActivity
     public void displayLoginData(LoginViewModel viewModel) {
         Log.e(TAG, "displayLoginData() called with: viewModel = [" + viewModel + "]");
         showProgress(false);
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         Intent intent = new Intent(getApplicationContext(), DogActivity.class);
         router.passDataToNextScene(viewModel, intent);
+    }
+
+    public boolean isInternetAvailable() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return  activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
     }
 }

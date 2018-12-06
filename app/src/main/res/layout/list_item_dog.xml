@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/dog_imageview"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:contentDescription="@string/image_of_a_dog"
+            tools:src="@drawable/n02110185_10047"/>
+
+        <ImageView
+            android:id="@+id/expanded_dog_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            android:contentDescription="@string/image_in_full_size"/>
+
+
+
+
+
+</LinearLayout>

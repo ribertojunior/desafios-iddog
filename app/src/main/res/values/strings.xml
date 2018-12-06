@@ -13,4 +13,10 @@
         completions."
     </string>
     <string name="email_error">Email inválido.</string>
+    <string name="image_of_a_dog">Image of a dog</string>
+    <string name="connection_error">No internet connection.</string>
+    <string name="breed_key">category</string>
+    <string name="breed_key_default">husky</string>
+    <string name="logo">IdDog logo</string>
+    <string name="image_in_full_size">Image in full size</string>
 </resources>

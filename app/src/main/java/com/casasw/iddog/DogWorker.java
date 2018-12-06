@@ -18,16 +18,11 @@ public class DogWorker implements DogWorkerInput {
 
 
     @Override
-
     public String getDogData() {
-        //String[] categories = {"husky", "hound", "pug", "labrador"};
         OkHttpClient client = new OkHttpClient();
 
         HttpUrl.Builder builder = HttpUrl.parse("https://api-iddog.idwall.co/feed").newBuilder();
-        builder.addQueryParameter("category","husky");
-        /*builder.addQueryParameter("category","hound");
-        builder.addQueryParameter("category","pug");
-        builder.addQueryParameter("category","labrador");*/
+        builder.addQueryParameter("category",mDogModel.getBreed());
         String url = builder.build().toString();
 
 

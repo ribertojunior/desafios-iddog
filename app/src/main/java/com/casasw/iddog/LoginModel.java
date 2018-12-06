@@ -16,24 +16,14 @@ public class LoginModel {
 }
 
 class LoginViewModel {
-    private String user;
-    private String token;
+    private User user;
 
-    public LoginViewModel(String user, String token) {
-        this.user = user;
-        this.token = token;
-    }
-
-    public LoginViewModel(String user) {
-        this.user = user;
-    }
-
-    public String getUser() {
+    public User getUser() {
         return user;
     }
 
-    public String getToken() {
-        return token;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
 
@@ -53,18 +43,36 @@ class LoginRequest {
 }
 
 class LoginResponse {
-    private String loginJson;
+    private LoginViewModel loginViewModel;
 
 
-
-
-    public String getLoginJson() {
-        return loginJson;
+    public LoginViewModel getLoginViewModel() {
+        return loginViewModel;
     }
 
-    public void setLoginJson(String loginJson) {
-        this.loginJson = loginJson;
+    public void setLoginViewModel(LoginViewModel loginViewModel) {
+        this.loginViewModel = loginViewModel;
+    }
+}
+
+class User {
+    private String email;
+    private String token;
+
+
+    public String getEmail() {
+        return email;
     }
 
+    public String getToken() {
+        return token;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

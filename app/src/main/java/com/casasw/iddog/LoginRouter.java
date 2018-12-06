@@ -20,8 +20,8 @@ public class LoginRouter implements LoginRouterInput {
 
     @Override
     public void passDataToNextScene(LoginViewModel viewModel, Intent intent) {
-        intent.putExtra("EXTRA_USER", viewModel.getUser());
-        intent.putExtra("EXTRA_TOKEN", viewModel.getToken());
+        intent.putExtra("EXTRA_USER", viewModel.getUser().getEmail());
+        intent.putExtra("EXTRA_TOKEN", viewModel.getUser().getToken());
         activity.get().startActivity(intent);
     }
 
