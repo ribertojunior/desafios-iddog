@@ -17,11 +17,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.casasw.iddog.data.DogContract;
 
-public class DogFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DogFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemSelectedListener {
 
     public static String TAG = DogFragment.class.getSimpleName();
     private static final int LOADER_ID = 14;
@@ -56,6 +59,14 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_dog, container, false);
         ViewHolder viewHolder = new ViewHolder(rootView);
+
+        ArrayAdapter<CharSequence> adapter =
+                ArrayAdapter.createFromResource(getContext(),
+                        R.array.dog_breed_array_C, R.layout.spinner_dog_item );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        viewHolder.mSpinner.setAdapter(adapter);
+        viewHolder.mSpinner.setOnItemSelectedListener(this);
+
         RecyclerViewAdapter.DogAdapterOnClickHandler handler = new RecyclerViewAdapter.DogAdapterOnClickHandler() {
             @Override
             public void onClick(String breed, RecyclerViewAdapter.AdapterViewHolder vh) {
@@ -98,15 +109,32 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
         mAdapter.swapCursor(null);
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //String item = (String) parent.getItemAtPosition(position);
+        DogActivity  activity = ((DogActivity)getActivity());
+        String item = getActivity().getResources().getStringArray(R.array.dog_breed_array)[position];
+        saveBreed(item);
+
+        activity.mDogModel = new DogModel(activity.mDogModel.getToken(), item);
+        activity.output.fetchDogActivityData(new DogRequest(activity.mDogModel));
+        getLoaderManager().restartLoader(LOADER_ID, null, this);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 
 
     static class ViewHolder {
         final RecyclerView mRecyclerView;
         final TextView mEmptyView;
+        final Spinner mSpinner;
         ViewHolder(View view) {
             mRecyclerView = (RecyclerView) view.findViewById(R.id.dog_recyclerview);
             mEmptyView = (TextView) view.findViewById(R.id.view_empty);
-
+            mSpinner = (Spinner) view.findViewById(R.id.dog_spinner);
         }
     }
     public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
@@ -133,6 +161,6 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
     }
     public interface Callback {
 
-        void onItemSelected(Uri movieUri, RecyclerViewAdapter.AdapterViewHolder vh);
+        void onItemSelected(Uri uri, RecyclerViewAdapter.AdapterViewHolder vh);
     }
 }

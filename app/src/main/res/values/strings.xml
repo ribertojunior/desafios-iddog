@@ -19,4 +19,17 @@
     <string name="breed_key_default">husky</string>
     <string name="logo">IdDog logo</string>
     <string name="image_in_full_size">Image in full size</string>
+
+    <string-array name="dog_breed_array">
+        <item>husky</item>
+        <item>hound</item>
+        <item>pug</item>
+        <item>labrador</item>
+    </string-array>
+    <string-array name="dog_breed_array_C">
+        <item>Husky</item>
+        <item>Hound</item>
+        <item>Pug</item>
+        <item>Labrador</item>
+    </string-array>
 </resources>

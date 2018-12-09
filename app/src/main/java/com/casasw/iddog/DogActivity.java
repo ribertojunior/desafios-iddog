@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.casasw.iddog.data.DogContract;
 import com.squareup.picasso.OkHttp3Downloader;
@@ -31,6 +32,7 @@ public class DogActivity extends FragmentActivity
     public static String TAG = DogActivity.class.getSimpleName();
     DogInteractorInput output;
     DogRouter router;
+    DogModel mDogModel;
     public static Picasso picassoWithCache;
 
     private String getBreed(){
@@ -52,9 +54,9 @@ public class DogActivity extends FragmentActivity
 
         DogConfigurator.INSTANCE.configure(this);
 
-
+        mDogModel = new DogModel(getIntent().getStringExtra("EXTRA_TOKEN"), getBreed());
         DogRequest aDogRequest =
-                new DogRequest(new DogModel(getIntent().getStringExtra("EXTRA_TOKEN"), getBreed()));
+                new DogRequest(mDogModel);
         File httpCacheDirectory = new File(getCacheDir(), "picasso-cache");
         Cache cache = new Cache(httpCacheDirectory, 15 * 1024 * 1024);
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder().cache(cache);
@@ -94,7 +96,7 @@ public class DogActivity extends FragmentActivity
     }
 
     @Override
-    public void onItemSelected(Uri movieUri, RecyclerViewAdapter.AdapterViewHolder vh) {
-
+    public void onItemSelected(Uri uri, RecyclerViewAdapter.AdapterViewHolder vh) {
+        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
     }
 }
