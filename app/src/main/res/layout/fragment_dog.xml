@@ -37,7 +37,8 @@
                 android:id="@+id/dog_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="Husky"
+                android:layout_marginTop="@dimen/half_margin"
+                tools:listitem="Eis"
                 android:popupBackground="@color/colorPrimary"
 
                 />
