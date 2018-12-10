@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 tools:listitem="Husky"
                 android:popupBackground="@color/colorPrimary"
-
+                android:backgroundTint="@android:color/white"
                 />
         </android.support.design.widget.AppBarLayout>
 

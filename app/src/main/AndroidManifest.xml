@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.casasw.iddog">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
 
     <application
         android:allowBackup="true"
@@ -13,29 +13,42 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <provider
-            android:authorities="com.casasw.iddog.app"
             android:name=".data.DogProvider"
+            android:authorities="com.casasw.iddog.app"
             android:exported="false"
-            android:syncable="true"/>
+            android:syncable="true" />
+
         <activity
             android:name=".LoginActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DogActivity"
+        <activity
+            android:name=".DogActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".LoginActivity">
+            android:theme="@style/DogTheme"
+            android:parentActivityName=".LoginActivity"/>
 
-        </activity>
-        <uses-library android:name="android.test.runner"
+        <uses-library
+            android:name="android.test.runner"
             android:required="false" />
 
-
+        <activity
+            android:name=".FullscreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_fullscreen"
+            android:parentActivityName=".DogActivity"
+            android:theme="@style/FullscreenTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.casasw.iddog.DogActivity" />
+        </activity>
     </application>
-
 
 </manifest>

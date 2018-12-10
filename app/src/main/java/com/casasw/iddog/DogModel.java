@@ -10,6 +10,7 @@ public class DogModel {
 
     public DogModel(String token, String breed) {
         this.token = token;
+        this.breed = breed;
     }
 
     public String getToken() {

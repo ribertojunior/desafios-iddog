@@ -3,11 +3,12 @@ package com.casasw.iddog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.casasw.iddog.data.DogContract;
 import com.squareup.picasso.OkHttp3Downloader;
@@ -27,7 +28,7 @@ interface DogActivityInput {
 
 
 public class DogActivity extends FragmentActivity
-        implements DogActivityInput, DogFragment.Callback {
+        implements DogActivityInput{
 
     public static String TAG = DogActivity.class.getSimpleName();
     DogInteractorInput output;
@@ -64,6 +65,11 @@ public class DogActivity extends FragmentActivity
                 new Picasso.Builder(this)
                         .downloader(new OkHttp3Downloader(okHttpClientBuilder.build())).build();
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+
 
        output.fetchDogActivityData(aDogRequest);
 
@@ -95,8 +101,5 @@ public class DogActivity extends FragmentActivity
 
     }
 
-    @Override
-    public void onItemSelected(Uri uri, RecyclerViewAdapter.AdapterViewHolder vh) {
-        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
-    }
+
 }

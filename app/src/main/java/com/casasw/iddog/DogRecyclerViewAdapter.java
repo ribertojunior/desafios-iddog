@@ -3,6 +3,7 @@ package com.casasw.iddog;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +13,15 @@ import android.widget.TextView;
 
 import com.casasw.iddog.data.DogContract;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.AdapterViewHolder> {
+public class DogRecyclerViewAdapter extends RecyclerView.Adapter<DogRecyclerViewAdapter.AdapterViewHolder> {
     private final DogAdapterOnClickHandler onClickHandler;
 
     private Cursor mCursor;
     final private Context mContext;
     final private View mEmptyView;
 
-    public RecyclerViewAdapter(Context context, DogAdapterOnClickHandler onClickListener, TextView emptyView) {
+
+    public DogRecyclerViewAdapter(Context context, DogAdapterOnClickHandler onClickListener, TextView emptyView) {
         this.mContext = context;
         this.onClickHandler = onClickListener;
         this.mEmptyView = emptyView;
@@ -39,7 +41,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         //set cursor and db
         mCursor.moveToPosition(position);
         String url = mCursor.getString(mCursor.getColumnIndex(DogContract.DogEntry.COLUMN_DOG_IMAGE_URL));
-        DogActivity.picassoWithCache.load(url).into(holder.dogImage);
+        DogActivity.picassoWithCache
+                .load(url)
+                .fit()
+                .centerCrop()
+                .placeholder(R.drawable.logo)
+                .into(holder.dogImage);
 
     }
 
@@ -66,8 +73,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
          @Override
          public void onClick(View view) {
             mCursor.moveToPosition(getAdapterPosition());
-            int breedIndex = mCursor.getColumnIndex(DogContract.DogEntry.COLUMN_DOG_BREED);
-            onClickHandler.onClick(mCursor.getString(breedIndex), this);
+            int columnIndex = mCursor.getColumnIndex(DogContract.DogEntry.COLUMN_DOG_IMAGE_URL);
+            onClickHandler.onClick(mCursor.getString(columnIndex), this);
          }
      }
 
@@ -78,7 +85,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public static interface  DogAdapterOnClickHandler {
-        void onClick(String breed, AdapterViewHolder vh);
+        void onClick(String url, AdapterViewHolder vh);
     }
 
 }

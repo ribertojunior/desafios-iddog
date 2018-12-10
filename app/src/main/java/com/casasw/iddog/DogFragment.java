@@ -1,6 +1,7 @@
 package com.casasw.iddog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Rect;
@@ -30,7 +31,7 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
     private static final int LOADER_ID = 14;
 
 
-    private RecyclerViewAdapter mAdapter;
+    private DogRecyclerViewAdapter mAdapter;
 
 
     private static final String[] DOG_COLUMNS = {
@@ -67,16 +68,24 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
         viewHolder.mSpinner.setAdapter(adapter);
         viewHolder.mSpinner.setOnItemSelectedListener(this);
 
-        RecyclerViewAdapter.DogAdapterOnClickHandler handler = new RecyclerViewAdapter.DogAdapterOnClickHandler() {
+        DogRecyclerViewAdapter.DogAdapterOnClickHandler handler = new DogRecyclerViewAdapter.DogAdapterOnClickHandler() {
             @Override
-            public void onClick(String breed, RecyclerViewAdapter.AdapterViewHolder vh) {
-                ((Callback) getActivity()).onItemSelected(DogContract.DogEntry.buildDogWithBreed(breed), vh);
+            public void onClick(String url, DogRecyclerViewAdapter.AdapterViewHolder vh) {
+                Intent intent  = new Intent(getContext(), FullscreenActivity.class);
+                intent.putExtra("EXTRA_URL", url);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(intent);
+
             }
         };
-        mAdapter = new RecyclerViewAdapter(getActivity(), handler, viewHolder.mEmptyView);
+        mAdapter = new DogRecyclerViewAdapter(getActivity(), handler, viewHolder.mEmptyView);
+
 
         viewHolder.mRecyclerView.setHasFixedSize(true);
-        viewHolder.mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+        viewHolder.mRecyclerView.setHasFixedSize(true);
+        //StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        viewHolder.mRecyclerView.setLayoutManager(layoutManager);
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing);
         viewHolder.mRecyclerView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));        //viewHolder.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         viewHolder.mRecyclerView.setAdapter(mAdapter);
@@ -161,6 +170,6 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
     }
     public interface Callback {
 
-        void onItemSelected(Uri uri, RecyclerViewAdapter.AdapterViewHolder vh);
+        void onItemSelected(String url, DogRecyclerViewAdapter.AdapterViewHolder vh);
     }
 }
