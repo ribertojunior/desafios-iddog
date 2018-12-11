@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Rect;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.casasw.iddog.data.DogContract;
 
@@ -121,13 +124,17 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         //String item = (String) parent.getItemAtPosition(position);
-        DogActivity  activity = ((DogActivity)getActivity());
-        String item = getActivity().getResources().getStringArray(R.array.dog_breed_array)[position];
-        saveBreed(item);
+        if (isInternetAvailable()) {
+            DogActivity activity = ((DogActivity) getActivity());
+            String item = getActivity().getResources().getStringArray(R.array.dog_breed_array)[position];
+            saveBreed(item);
 
-        activity.mDogModel = new DogModel(activity.mDogModel.getToken(), item);
-        activity.output.fetchDogActivityData(new DogRequest(activity.mDogModel));
-        getLoaderManager().restartLoader(LOADER_ID, null, this);
+            activity.mDogModel = new DogModel(activity.mDogModel.getToken(), item);
+            activity.output.fetchDogActivityData(new DogRequest(activity.mDogModel));
+            getLoaderManager().restartLoader(LOADER_ID, null, this);
+        } else {
+            Toast.makeText(getContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -171,5 +178,14 @@ public class DogFragment extends Fragment implements LoaderManager.LoaderCallbac
     public interface Callback {
 
         void onItemSelected(String url, DogRecyclerViewAdapter.AdapterViewHolder vh);
+    }
+
+    public boolean isInternetAvailable() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return  activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
     }
 }
